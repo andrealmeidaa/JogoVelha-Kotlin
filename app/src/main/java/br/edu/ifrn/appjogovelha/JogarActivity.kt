@@ -124,7 +124,7 @@ class JogarActivity : AppCompatActivity() {
                 atualizaPlacar()
                 btnTrava()
                 Toast.makeText(this, "${this.j1.toString()} (X) Venceu", Toast.LENGTH_LONG).show()
-                Thread.sleep(2_000)
+                Thread.sleep(2_000)   
                 limpar(btn1)
                 break
             }
