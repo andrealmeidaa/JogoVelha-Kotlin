@@ -28,9 +28,6 @@ class JogarActivity : AppCompatActivity() {
     val r = ArrayList<Int>()
     var g = ArrayList<Int>()
 
-    val jogador1 = ArrayList<Int>()
-    val jogador2 = ArrayList<Int>()
-
     var j1:String = ""
     var j2:String = ""
     var placar1: Int = 0
@@ -47,13 +44,13 @@ class JogarActivity : AppCompatActivity() {
         j1 = argumentos.getString("jogador1")
         j2 = argumentos.getString("jogador2")
         placar1 = argumentos.getString("placar1").toInt()
-        placar1 = argumentos.getString("placar2").toInt()
+        placar2 = argumentos.getString("placar2").toInt()
 
         tv_jogador1.text = j1.toString()
         tv_jogador2.text = j2.toString()
 
         atualizaPlacar()
-
+        g.clear()
         for (i in 1..10) { g.add(0) }
 
     }
@@ -76,32 +73,15 @@ class JogarActivity : AppCompatActivity() {
             btnAtual.text = "X"
             btnAtual.setBackgroundResource(R.color.colorJogador1)
             g.set(jogada, 1)
-
-            Log.d("Jogadas do Jogador 1 = ${jogada}", "${jogador1.toString()}");
             this.jogadorAtual = 2
         } else {
             btnAtual.text = "O"
             btnAtual.setBackgroundResource(R.color.colorJogador2)
-            jogador2.add(jogada)
             g.set(jogada, -1)
-
-            Log.d("Jogadas do Jogador 2 = ${jogada}", "${jogador2.toString()}");
             this.jogadorAtual = 1
         }
 
-        t=0
-        for (i in g) {
-            if (i==1 && i==-1) { t++ }
-            Log.d("Jogadas = ${g}", "${jogador1.toString()}");
-        }
-
-        if (t==9) {
-            btnTrava()
-            Toast.makeText(this, "Não houve vencedor", Toast.LENGTH_LONG).show()
-        }
-
         checkGrid()
-
     }
 
     /**
@@ -109,6 +89,7 @@ class JogarActivity : AppCompatActivity() {
      */
 
     fun checkGrid() {
+
         r.clear()
 
         r.add(g[1]+g[2]+g[3])
@@ -127,24 +108,37 @@ class JogarActivity : AppCompatActivity() {
                 atualizaPlacar()
                 btnTrava()
                 Toast.makeText(this, "${this.j1.toString()} (X) Venceu", Toast.LENGTH_LONG).show()
-                Thread.sleep(2_000)
-                limpar(btn1)
-                break
+                // Thread.sleep(2_000)
+                // limpar(btn1)
+                return
             }
             if (i == -3) {
                 this.placar2++
                 atualizaPlacar()
                 btnTrava()
                 Toast.makeText(this, "${this.j2.toString()} (O) Venceu", Toast.LENGTH_LONG).show()
-                Thread.sleep(2_000)
-                limpar(btn1)
-                break
+                // Thread.sleep(2_000)
+                // limpar(btn1)
+                return
             }
         }
+
+        t=0
+        for (i in g) {
+            if (i==1 || i==-1) { t++ }
+        }
+
+        if (t==9) {
+            btnTrava()
+            Toast.makeText(this, "Não houve vencedor", Toast.LENGTH_LONG).show()
+        }
+
     }
 
     fun limpar(limpar_view: View) {
-        for (i in 1..10) { g.add(i,0) }
+        g.clear()
+        for (i in 0..10) { g.add(i,0) }
+
         btn1.isClickable = true
         btn2.isClickable = true
         btn3.isClickable = true
