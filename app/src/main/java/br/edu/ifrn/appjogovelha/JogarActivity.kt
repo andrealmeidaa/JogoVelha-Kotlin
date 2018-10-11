@@ -88,10 +88,13 @@ class JogarActivity : AppCompatActivity() {
             Log.d("Jogadas do Jogador 2 = ${jogada}", "${jogador2.toString()}");
             this.jogadorAtual = 1
         }
+
         t=0
         for (i in g) {
-            if (t==1 && t==-1) { t++ }
+            if (i==1 && i==-1) { t++ }
+            Log.d("Jogadas = ${g}", "${jogador1.toString()}");
         }
+
         if (t==9) {
             btnTrava()
             Toast.makeText(this, "Não houve vencedor", Toast.LENGTH_LONG).show()
@@ -124,7 +127,7 @@ class JogarActivity : AppCompatActivity() {
                 atualizaPlacar()
                 btnTrava()
                 Toast.makeText(this, "${this.j1.toString()} (X) Venceu", Toast.LENGTH_LONG).show()
-                Thread.sleep(2_000)   
+                Thread.sleep(2_000)
                 limpar(btn1)
                 break
             }
