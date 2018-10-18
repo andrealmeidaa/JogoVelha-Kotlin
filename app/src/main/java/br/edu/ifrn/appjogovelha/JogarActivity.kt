@@ -62,10 +62,10 @@ class JogarActivity : AppCompatActivity() {
      */
     fun btnPosicao(view: View) = jogar(view.tag.toString().toInt(), view as Button)
 
-    /**
-     *   Parâmentros:  @ valor da propriedade Tag do botão
-     *                 @ botão pressionado
-     */
+    override fun onStart() {
+        super.onStart()
+        Toast.makeText(this, "Iniciado", Toast.LENGTH_LONG).show()
+    }
     fun jogar(jogada: Int, btnAtual: Button) {
 
         btnAtual.isClickable = false
