@@ -3,6 +3,7 @@ package br.edu.ifrn.appjogovelha
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.View
 import android.widget.Button
@@ -108,8 +109,7 @@ class JogarActivity : AppCompatActivity() {
                 atualizaPlacar()
                 btnTrava()
                 Toast.makeText(this, "${this.j1.toString()} (X) Venceu", Toast.LENGTH_LONG).show()
-                // Thread.sleep(2_000)
-                // limpar(btn1)
+                reiniciaJogo()
                 return
             }
             if (i == -3) {
@@ -117,8 +117,7 @@ class JogarActivity : AppCompatActivity() {
                 atualizaPlacar()
                 btnTrava()
                 Toast.makeText(this, "${this.j2.toString()} (O) Venceu", Toast.LENGTH_LONG).show()
-                // Thread.sleep(2_000)
-                // limpar(btn1)
+               reiniciaJogo()
                 return
             }
         }
@@ -131,6 +130,7 @@ class JogarActivity : AppCompatActivity() {
         if (t==9) {
             btnTrava()
             Toast.makeText(this, "Não houve vencedor", Toast.LENGTH_LONG).show()
+            reiniciaJogo()
         }
 
     }
@@ -138,8 +138,18 @@ class JogarActivity : AppCompatActivity() {
     fun limpar(limpar_view: View) {
         g.clear()
         for (i in 0..10) { g.add(i,0) }
+        var botao:Button?
+        for(i in 1..10){
+            botao=this.tabela.findViewWithTag(i.toString()) as Button?
+            if(botao!=null){
+                botao.isClickable=true
+                botao.text=""
+                botao.setBackgroundResource(android.R.drawable.btn_default)
+            }
 
-        btn1.isClickable = true
+        }
+
+       /* btn1.isClickable = true
         btn2.isClickable = true
         btn3.isClickable = true
         btn4.isClickable = true
@@ -168,7 +178,7 @@ class JogarActivity : AppCompatActivity() {
         btn7.setBackgroundResource(android.R.drawable.btn_default);
         btn8.setBackgroundResource(android.R.drawable.btn_default);
         btn9.setBackgroundResource(android.R.drawable.btn_default);
-
+*/
     }
 
     fun restart(vencedor_view: View) {
@@ -187,6 +197,7 @@ class JogarActivity : AppCompatActivity() {
 
     fun atualizaPlacar() {
         tv_placar.text = "${placar1}"+"/"+"${placar2}"
+
     }
 
     fun fim(view: View) {
@@ -195,8 +206,15 @@ class JogarActivity : AppCompatActivity() {
         startActivity(mainIntent)
     }
 
+    fun reiniciaJogo(){
+        //Limpa a tela depois de 1 segundo, porém em Thread Separada
+        Handler().postDelayed({
+            limpar(btn_limpar)
+        },1000)
+    }
+
     fun btnTrava() {
-        btn1.isClickable = false
+        /*btn1.isClickable = false
         btn2.isClickable = false
         btn3.isClickable = false
         btn4.isClickable = false
@@ -204,6 +222,15 @@ class JogarActivity : AppCompatActivity() {
         btn6.isClickable = false
         btn7.isClickable = false
         btn8.isClickable = false
-        btn9.isClickable = false
+        btn9.isClickable = false*/
+        var botao:Button?
+        for(i in 1..10){
+            //Recupera o botão por TAG, podendo retornar um valor nulo
+            botao=this.tabela.findViewWithTag(i.toString()) as Button?
+            if (botao!=null)
+             botao.isClickable=false
+        }
+        //Thread.sleep(2000)
+        //limpar(btn_limpar)
     }
 }
