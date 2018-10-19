@@ -4,6 +4,7 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.os.PersistableBundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
@@ -26,7 +27,7 @@ class JogarActivity : AppCompatActivity() {
     //    | 7 | 8 | 9 |
     //    +---+---+---+
     //
-    val r = ArrayList<Int>()
+    var r = ArrayList<Int>()
     var g = ArrayList<Int>()
 
     var j1:String = ""
@@ -50,9 +51,19 @@ class JogarActivity : AppCompatActivity() {
         tv_jogador1.text = j1.toString()
         tv_jogador2.text = j2.toString()
 
-        atualizaPlacar()
-        g.clear()
-        for (i in 1..10) { g.add(0) }
+        if(savedInstanceState!=null){
+            g=savedInstanceState.getIntegerArrayList("g")
+            placar1=savedInstanceState.getInt("placar1")
+            placar2=savedInstanceState.getInt("placar2")
+            jogadorAtual=savedInstanceState.getInt("jogadorAtual")
+            reconstroiTabuleiro()
+        }else {
+            atualizaPlacar()
+            g.clear()
+            for (i in 1..10) { g.add(0) }
+        }
+
+
 
     }
 
@@ -65,6 +76,31 @@ class JogarActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         Toast.makeText(this, "Iniciado", Toast.LENGTH_LONG).show()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        outState?.putInt("placar1",placar1)
+        outState?.putInt("placar2",placar2)
+        outState?.putInt("jogadorAtual",jogadorAtual)
+        outState?.putIntegerArrayList("g",g)
+        super.onSaveInstanceState(outState)
+    }
+    fun reconstroiTabuleiro(){
+        var botao:Button?
+        for ((posicao,valor) in g.withIndex()){
+            botao=this.tabela.findViewWithTag("${posicao}") as Button?
+            if (valor==1){
+                botao?.setBackgroundResource(R.color.colorJogador1)
+                botao?.text="X"
+                botao?.isClickable=false
+            }else if(valor==-1){
+                botao?.text="O"
+                botao?.setBackgroundResource(R.color.colorJogador2)
+                botao?.isClickable=false
+            }
+        }
+        atualizaPlacar()
+
     }
     fun jogar(jogada: Int, btnAtual: Button) {
 
